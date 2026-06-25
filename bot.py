@@ -1,4 +1,3 @@
-bot.py
 import os
 from pyrogram import Client, filters
 
