@@ -1,20 +1,22 @@
 import os
+import asyncio
 from pyrogram import Client
 
-# Render'dan o'qib olish
-api_id = os.environ.get("API_ID")
+api_id = int(os.environ.get("API_ID"))
 api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("BOT_TOKEN")
 
-# Agar qiymatlar topilmasa, xato chiqarmasligi uchun tekshiramiz
-if not api_id or not api_hash or not bot_token:
-    print("XATO: Muhit o'zgaruvchilari (Environment Variables) to'g'ri o'rnatilmagan!")
-    exit(1)
+app = Client("my_music_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
-# api_id ni raqamga o'giramiz
-app = Client("my_music_bot", api_id=int(api_id), api_hash=api_hash, bot_token=bot_token)
-
-print("Bot ishga tushishga tayyor...")
+async def main():
+    await app.start()
+    print("Bot muvaffaqiyatli ishga tushdi!")
+    # Render "Web Service" uchun port talab qilmasligi uchun 
+    # to'g'ridan-to'g'ri abadiy kutish rejimiga o'tamiz
+    await asyncio.Event().wait()
 
 if __name__ == "__main__":
-    app.run()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
